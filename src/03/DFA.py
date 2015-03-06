@@ -52,6 +52,10 @@ if __name__ == '__main__':
         FARule(1, 'a', 2), FARule(1, 'b', 1),
         FARule(2, 'a', 2), FARule(2, 'b', 3),
         FARule(3, 'a', 3), FARule(3, 'b', 3)])
+
+    import graph_util
+    graph_util.make_graph(rulebook)
+
     print(rulebook.next_state(1, 'a'))
     print(rulebook.next_state(1, 'b'))
     print(rulebook.next_state(2, 'b'))
