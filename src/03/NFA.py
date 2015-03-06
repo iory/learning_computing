@@ -46,6 +46,9 @@ def main():
         FARule(1, 'a', 1), FARule(1, 'b', 1), FARule(1, 'b', 2),
         FARule(2, 'a', 3), FARule(2, 'b', 3),
         FARule(3, 'a', 4), FARule(3, 'b', 4)])
+
+    import graph_util
+    graph_util.make_graph(rulebook)
     print(rulebook.next_states(set([1]), 'b'))
     print(rulebook.next_states(set([1, 2]), 'a'))
     print(rulebook.next_states(set([1, 3]), 'b'))
