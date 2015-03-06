@@ -53,9 +53,6 @@ if __name__ == '__main__':
         FARule(2, 'a', 2), FARule(2, 'b', 3),
         FARule(3, 'a', 3), FARule(3, 'b', 3)])
 
-    import graph_util
-    graph_util.make_graph(rulebook)
-
     print(rulebook.next_state(1, 'a'))
     print(rulebook.next_state(1, 'b'))
     print(rulebook.next_state(2, 'b'))
@@ -64,6 +61,9 @@ if __name__ == '__main__':
     print(DFA(1, [3], rulebook).accepting())
 
     dfa = DFA(1, [3], rulebook)
+    import graph_util
+    graph_util.make_graph(dfa)
+
     print(dfa.accepting())
     dfa.read_string('baaab')
     print(dfa.accepting())
