@@ -27,10 +27,10 @@ def edges2dot(edges, edge_label):
         s += '\n{}->{}[label=\"{}\"];'.format(edge[0], edge[1], edge_label[i])
     return s
 
-def make_graph(dfa, file_name="test.dot"):
+def make_graph(fa, file_name="test.dot"):
     print("making dot file for graphviz...")
-    rulebook = dfa.rulebook
-    accept_states = dfa.accept_states
+    rulebook = fa.rulebook
+    accept_states = fa.accept_states
     nodes = {}
     edges = []
     edge_label = []
