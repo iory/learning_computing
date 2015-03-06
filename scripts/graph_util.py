@@ -16,8 +16,9 @@ def graph2dot(nodes, edges, edge_label, file_name="test.dot"):
 
 def nodes2dot(nodes):
     s = ""
-    for node in nodes:
-        s += '\n{}[label=\"{}\"];'.format(node, node)
+    for node, shape in nodes.items():
+        # print(shape, node)
+        s += '\n{}[shape=\"{}\", label=\"{}\"];'.format(node, shape, node)
     return s
 
 def edges2dot(edges, edge_label):
@@ -26,16 +27,22 @@ def edges2dot(edges, edge_label):
         s += '\n{}->{}[label=\"{}\"];'.format(edge[0], edge[1], edge_label[i])
     return s
 
-def make_graph(rulebook, file_name="test.dot"):
+def make_graph(dfa, file_name="test.dot"):
     print("making dot file for graphviz...")
-    nodes = set()
+    rulebook = dfa.rulebook
+    accept_states = dfa.accept_states
+    nodes = {}
     edges = []
     edge_label = []
     for rule in rulebook.rules:
-        nodes.add(rule.state)
-        nodes.add(rule.next_state)
+        nodes[rule.state] = 'circle'
+        nodes[rule.next_state] = 'circle'
+        # nodes.add(rule.state)
+        # nodes.add(rule.next_state)
         edges.append([rule.state, rule.next_state])
         edge_label.append(rule.character)
+    for accept_state in accept_states:
+        nodes[accept_state] = 'doublecircle'
     graph2dot(nodes, edges, edge_label, file_name)
 
     print("generating png file...")
