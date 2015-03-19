@@ -5,11 +5,13 @@ class Stack(object):
     def __init__(self, contents):
         self.contents = contents
     def __str__(self):
-        return "#<Stack ({}){}>".format(self)
+        return "#<Stack ({}){}>".format(self.top(), ''.join(self.drop(1)))
     def push(self, character):
         self.contents.insert(0, character)
+        return self
     def pop(self):
         self.contents = self.drop(1)
+        return self
     def top(self):
         return self.contents[0]
     def drop(self, n):
@@ -29,6 +31,7 @@ def main():
     stack.push('y')
     stack.pop()
     print(stack.top())
+    print(stack)
 
 if __name__ == "__main__":
     main()
