@@ -5,6 +5,7 @@ from stack import Stack
 import copy
 
 class PDAConfiguration(object):
+    STUCK_STATE = object()
     def __init__(self, state, stack):
         self.state = state
         self.stack = stack
@@ -12,6 +13,11 @@ class PDAConfiguration(object):
         return '#<struct {0.__class__.__name__} state={0.state}, stack={0.stack}>'.format(self)
     def __repr__(self):
         return self.__str__()
+    def stuck(self):
+        # stuck means unable to move
+        return PDAConfiguration(PDAConfiguration.STUCK_STATE, self.stack)
+    def isStuck(self):
+        return self.state == PDAConfiguration.STUCK_STATE
 
 class PDARule(object):
     def __init__(self, state, character, next_state,
@@ -74,14 +80,23 @@ class DPDA(object):
         print(self.current_configuration.state, self.accept_states)
         return self.current_configuration.state in self.accept_states
     def read_character(self, character):
-        self.current_configuration = self.rulebook.next_configuration(self.current_configuration, character)
-        self.update()
+        # self.current_configuration = self.rulebook.next_configuration(self.current_configuration, character)
+        self.update_next_configuration(character)
+        self.current_configuration = self.next_configuration
+        self.update_current_configuration()
     def read_string(self, string):
         for character in string:
+            if self.isStuck(): break
             self.read_character(character)
-    def update(self):
+    def update_current_configuration(self):
         self.current_configuration = self.rulebook.follow_free_moves(self.current_configuration)
-
+    def update_next_configuration(self, character):
+        if self.rulebook.applies_to(self.current_configuration, character):
+            self.next_configuration = self.rulebook.next_configuration(self.current_configuration, character)
+        else:
+            self.next_configuration = self.current_configuration.stuck()
+    def isStuck(self):
+        return self.current_configuration.isStuck()
 class DPDADesign(object):
     def __init__(self, start_state, bottom_character, accept_states, rulebook):
         self.start_state = start_state
@@ -151,6 +166,7 @@ def main():
     dpda_design = DPDADesign(1, '$', set([1]), rulebook)
     print(dpda_design.accept('((((((((((()))))))))))'))
     print(dpda_design.accept('((((((((()))))))))()'))
+    print(dpda_design.accept('())'))
 
 if __name__ == "__main__":
     main()
