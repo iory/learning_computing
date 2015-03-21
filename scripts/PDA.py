@@ -168,5 +168,20 @@ def main():
     print(dpda_design.accept('((((((((()))))))))()'))
     print(dpda_design.accept('())'))
 
+    rulebook = DPDARulebook([
+        PDARule(1, 'a', 2, '$', ['a', '$']),
+        PDARule(1, 'b', 2, '$', ['b', '$']),
+        PDARule(2, 'a', 2, 'a', ['a', 'a']),
+        PDARule(2, 'b', 2, 'b', ['b', 'b']),
+        PDARule(2, 'a', 2, 'b', []),
+        PDARule(2, 'b', 2, 'a', []),
+        PDARule(2, None, 1, '$', ['$'])
+    ])
+    dpda_design = DPDADesign(1, '$', set([1]), rulebook)
+    print(dpda_design.accept('ababab'))
+    print(dpda_design.accept('bbbaaaab'))
+    print(dpda_design.accept('baa'))
+
+
 if __name__ == "__main__":
     main()

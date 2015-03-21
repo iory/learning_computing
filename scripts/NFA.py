@@ -15,13 +15,13 @@ class NFARulebook(object):
     def __init__(self, rules):
         self.rules = rules
     def next_states(self, states, character):
-        ret = []
+        ns = []
         for state in states:
             if isinstance(state, list):
-                ret += self.next_states(state, character)
+                ns += self.next_states(state, character)
             else:
-                ret += self.follow_rules_for(state, character)
-        return set(ret)
+                ns += self.follow_rules_for(state, character)
+        return set(ns)
 
     def follow_rules_for(self, state, character):
         return map(lambda x: x.follow(), self.rules_for(state, character))

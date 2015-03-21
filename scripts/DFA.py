@@ -17,7 +17,6 @@ class DFARulebook(object):
     def next_state(self, state, character):
         return self.rule_for(state, character).follow()
     def rule_for(self, state, character):
-        # bad code
         for rule in self.rules:
             if rule.applies_to(state, character):
                 return rule
