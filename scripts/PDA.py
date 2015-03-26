@@ -18,6 +18,16 @@ class PDAConfiguration(object):
         return PDAConfiguration(PDAConfiguration.STUCK_STATE, self.stack)
     def isStuck(self):
         return self.state == PDAConfiguration.STUCK_STATE
+    def __eq__(self, other):
+        if self.state != other.state:
+            return False
+        if self.stack != other.stack:
+            return False
+        return True
+    def __ne__(self, other):
+        return not self.__eq__(other)
+    def __hash__(self):
+        return hash((self.state, self.stack))
 
 class PDARule(object):
     def __init__(self, state, character, next_state,

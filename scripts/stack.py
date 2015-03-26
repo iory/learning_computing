@@ -6,6 +6,12 @@ class Stack(object):
         self.contents = contents
     def __str__(self):
         return "#<Stack ({}){}>".format(self.top(), ''.join(self.drop(1)))
+    def __eq__(self, other):
+        return self.contents == other.contents
+    def __ne__(self, other):
+        return not self.__eq__(other)
+    def __hash__(self):
+        return sum(map(hash, self.contents))
     def push(self, character):
         self.contents.insert(0, character)
         return self
@@ -32,6 +38,10 @@ def main():
     stack.pop()
     print(stack.top())
     print(stack)
+
+    copy_stack = Stack(['x', 'y', 'x', 'c', 'd', 'e'])
+    print(copy_stack)
+    print(stack == copy_stack)
 
 if __name__ == "__main__":
     main()
