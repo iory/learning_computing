@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+
 class FARule(object):
     def __init__(self, state, character, next_state):
         self.state = state

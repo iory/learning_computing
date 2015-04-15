@@ -35,16 +35,21 @@ class NPDA(object):
         self.rulebook = rulebook
 
     def accepting(self):
-        self.update_current_configuration()
         return any([config.state in self.accept_states for config in self.current_configurations])
     def read_character(self, character):
         self.current_configurations = self.rulebook.next_configurations(self.current_configurations, character)
-        self.update_current_configuration()
     def read_string(self, string):
         for char in string:
             self.read_character(char)
-    def update_current_configuration(self):
-        self.current_configurations = self.rulebook.follow_free_moves(self.current_configurations)
+
+    @property
+    def current_configurations(self):
+        self._current_configurations = self.rulebook.follow_free_moves(self._current_configurations)
+        return self._current_configurations
+
+    @current_configurations.setter
+    def current_configurations(self, cconfigs):
+        self._current_configurations = cconfigs
 
 class NPDADesign(object):
     def __init__(self, start_state, bottom_character, accept_states, rulebook):
